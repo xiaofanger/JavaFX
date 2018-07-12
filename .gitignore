@@ -1,0 +1,15 @@
+*.iml
+.gradle/
+*.iws
+*.ipr
+test.gradle
+out/
+nodeJs/
+senchaCmd/
+build/
+modules/out
+*.iws___jb_tmp___
+logs/
+UIBuilderSync.properties
+
+jdextdoc/

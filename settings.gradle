@@ -1,0 +1,4 @@
+rootProject.name = 'JavaFx'
+include 'console'
+findProject(':console')?.name = 'client'
+

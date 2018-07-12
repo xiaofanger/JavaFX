@@ -1,0 +1,22 @@
+.button:hover {
+    -fx-background-color: #457ecd;
+    -fx-text-fill: #ffffff;
+}
+.close-btn {
+    -fx-background-color: #0080FF;
+}
+.min-btn {
+    -fx-background-color: #0080FF;
+}
+.close-btn:hover {
+    -fx-background-color: #FA6054;
+}
+.min-btn:hover {
+    -fx-background-color: #FA6054;
+}
+
+.grid-panel {
+    -fx-background-color: #3E4243;
+    -fx-opacity: 0.5;
+    /*-fx-background-image: url=@images/splash.bmp;*/
+}
