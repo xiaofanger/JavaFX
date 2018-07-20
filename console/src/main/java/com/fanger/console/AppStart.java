@@ -2,12 +2,15 @@ package com.fanger.console;
 
 import com.fanger.event.ExitEvent;
 import com.fanger.event.StartAndStopEvent;
+import com.fanger.jms.LogMessageConsumer;
+import com.fanger.jms.LogMessageProducer;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.AccessibleAction;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
+import javax.jms.JMSException;
 import java.awt.*;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
@@ -55,6 +59,9 @@ public class AppStart extends Application {
     public void init() throws Exception {
         super.init();
         logger.debug("应用启动，初始化资源");
+
+        LogMessageProducer.getMessageProducer();
+
         ctx = InitApplicationContext.createInstance();
         //启动当前的应用上下文
         ctx.start();
@@ -70,7 +77,8 @@ public class AppStart extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-
+        LogMessageProducer.close();
+        LogMessageConsumer.close();
         logger.debug("应用退出，销毁资源");
     }
 
@@ -122,6 +130,16 @@ public class AppStart extends Application {
             start.setContentDisplay(ContentDisplay.LEFT);
             start.setText("停止");
             this.setStart(true);
+            new Thread(() -> {
+                for (int i = 0; i < 100; i++) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    logger.info("发送日志消息 ---->> " + i);
+                }
+            }).start();
         }
     }
 
@@ -130,33 +148,23 @@ public class AppStart extends Application {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         if (dimension.getWidth() <= 1366.0 && dimension.getHeight() <= 768.0) {
             //用于小分辨率的屏幕
-            root = FXMLLoader.load(Objects.requireNonNull(
-                    getClass().getClassLoader().getResource("LowStudioConsoleView.fxml")));
+
         } else {
-            root = FXMLLoader.load(Objects.requireNonNull(
-                    getClass().getClassLoader().getResource("StudioConsoleView.fxml")));
+
         }
+        root = FXMLLoader.load(Objects.requireNonNull(
+                getClass().getClassLoader().getResource("StudioConsoleView.fxml")));
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.initResource();
         Scene scene;
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        if (dimension.getWidth() <= 1366.0 && dimension.getHeight() <= 768.0) {
-            //用于小分辨率的屏幕
-            scene = new Scene(root, 600, 400);
-            primaryStage.setMaxWidth(760);
-            primaryStage.setMaxHeight(520);
-            primaryStage.setMinWidth(620);
-            primaryStage.setMinHeight(440);
-        } else {
-            scene = new Scene(root, 800, 460);
-            primaryStage.setMaxWidth(860);
-            primaryStage.setMaxHeight(580);
-            primaryStage.setMinWidth(620);
-            primaryStage.setMinHeight(500);
-        }
+        scene = new Scene(root, 800, 460);
+        primaryStage.setMaxWidth(860);
+        primaryStage.setMaxHeight(580);
+        primaryStage.setMinWidth(620);
+        primaryStage.setMinHeight(500);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader()
                 .getResource("StudioConsole.css")).toExternalForm());
         primaryStage.setScene(scene);
@@ -197,6 +205,17 @@ public class AppStart extends Application {
                 new javafx.scene.image.Image(getClass().getClassLoader().getResourceAsStream("images/work.png"))
         ));
         workBtn.setContentDisplay(ContentDisplay.LEFT);
+
+        ListView<String> listView = (ListView<String>) root.lookup("#logContent");
+        ObservableList<String> items =FXCollections.observableArrayList ();
+        new Thread(() -> {
+            try {
+                LogMessageConsumer.read(items);
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        listView.setItems(items);
     }
 
     public static void main(String[] args) {
