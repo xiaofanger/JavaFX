@@ -43,7 +43,7 @@ public class LogMessageConsumer {
                 Platform.runLater(() -> {
                     //更新JavaFX的主线程的代码放在此处
                     try {
-                        if (items.size() > 50) {
+                        if (items.size() > 1000) {
                             items.remove(0);
                         }
                         items.add(items.size(), textMessage.getText());

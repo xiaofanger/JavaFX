@@ -2,6 +2,7 @@ package com.fanger.console;
 
 import com.fanger.event.ExitEvent;
 import com.fanger.event.StartAndStopEvent;
+import com.fanger.spring.InitApplicationContext;
 import com.fanger.util.JFXUtil;
 import com.fanger.util.RemoteDownload;
 import com.google.common.eventbus.EventBus;

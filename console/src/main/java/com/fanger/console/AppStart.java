@@ -1,9 +1,11 @@
 package com.fanger.console;
 
 import com.fanger.event.ExitEvent;
+import com.fanger.event.LogMessageEvent;
 import com.fanger.event.StartAndStopEvent;
 import com.fanger.jms.LogMessageConsumer;
 import com.fanger.jms.LogMessageProducer;
+import com.fanger.spring.InitApplicationContext;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Application;
@@ -60,7 +62,7 @@ public class AppStart extends Application {
         super.init();
         logger.debug("应用启动，初始化资源");
 
-        LogMessageProducer.getMessageProducer();
+//        LogMessageProducer.getMessageProducer();
 
         ctx = InitApplicationContext.createInstance();
         //启动当前的应用上下文
@@ -77,8 +79,8 @@ public class AppStart extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        LogMessageProducer.close();
-        LogMessageConsumer.close();
+//        LogMessageProducer.close();
+//        LogMessageConsumer.close();
         logger.debug("应用退出，销毁资源");
     }
 
@@ -156,6 +158,26 @@ public class AppStart extends Application {
                 getClass().getClassLoader().getResource("StudioConsoleView.fxml")));
     }
 
+    @Subscribe
+    public void outputLog(LogMessageEvent message) {
+        ListView<String> listView = (ListView<String>) this.root.lookup("#logContent");
+//        new Thread(() -> {
+//            try {
+//                LogMessageConsumer.read(items);
+//            } catch (JMSException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
+        ObservableList<String> items = listView.getItems();
+        Platform.runLater(() -> {
+            //更新JavaFX的主线程的代码放在此处
+            if (items.size() > 1000) {
+                items.remove(0);
+            }
+            items.add(items.size(), message.getMessage());
+        });
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.initResource();
@@ -208,13 +230,13 @@ public class AppStart extends Application {
 
         ListView<String> listView = (ListView<String>) root.lookup("#logContent");
         ObservableList<String> items =FXCollections.observableArrayList ();
-        new Thread(() -> {
-            try {
-                LogMessageConsumer.read(items);
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-        }).start();
+//        new Thread(() -> {
+//            try {
+//                LogMessageConsumer.read(items);
+//            } catch (JMSException e) {
+//                e.printStackTrace();
+//            }
+//        }).start();
         listView.setItems(items);
     }
 
