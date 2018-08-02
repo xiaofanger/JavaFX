@@ -12,11 +12,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -183,8 +186,8 @@ public class AppStart extends Application {
         this.initResource();
         Scene scene;
         scene = new Scene(root, 800, 460);
-        primaryStage.setMaxWidth(860);
-        primaryStage.setMaxHeight(580);
+//        primaryStage.setMaxWidth(860);
+//        primaryStage.setMaxHeight(580);
         primaryStage.setMinWidth(620);
         primaryStage.setMinHeight(500);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getClassLoader()

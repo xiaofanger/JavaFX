@@ -13,6 +13,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
@@ -57,6 +58,10 @@ public class MainController {
     private TextField ideaPortField;
     @FXML
     private Button startAndStopBtn;
+    @FXML
+    private MenuItem clear;
+    @FXML
+    private ListView<String> logContent;
 
     public int SERVER_PORT = 9996;
 
@@ -67,6 +72,17 @@ public class MainController {
      */
     public void onOpenDir(ActionEvent event) {
         JFXUtil.onOpenDir(jdkPathField);
+    }
+
+    /**
+     * 清空日志
+     * @param event
+     */
+    @FXML
+    private void onClearLog(ActionEvent event) {
+        Platform.runLater(() -> {
+            logContent.getItems().clear();
+        });
     }
 
     /**

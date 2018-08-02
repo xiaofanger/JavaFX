@@ -1,5 +1,6 @@
 
 apply plugin: 'maven-publish'
+apply plugin: 'edu.sc.seis.launch4j'
 
 def springVersion = "5.0.7.RELEASE"
 
@@ -24,7 +25,35 @@ dependencies {
 
     compile 'org.apache.activemq:activemq-all:5.15.4'
     // 嵌入式
-    compile 'org.apache.activemq:activemq-broker-all:5.15.4'
+    compile 'org.apache.activemq:activemq-broker:5.15.4'
+
+}
+
+launch4j {
+    outfile=rootProject.name+".exe"
+//    icon="$serverModule.buildDir/resources/main/images/icon.ico"
+
+//    splashFileName="$serverModule.buildDir/resources/main/images/splash.bmp"
+//    splashWaitForWindows=true
+//    splashTimeout=60
+//    splashTimeoutError=false
+
+    headerType="gui"
+    mainClassName = 'com.fanger.console.AppStart'
+    messagesInstanceAlreadyExists="已存在JdYunStudio的实例"
+    bundledJrePath=""
+    language="SIMPLIFIED_CHINESE"
+    jreRuntimeBits="32"
+    jreMinVersion="1.8.0"
+    companyName="fanger"
+    copyright="fanger@none"
+    mutexName = rootProject.name + ".exe"
+//        windowTitle=rootProject.name
+    productName=rootProject.name
+    internalName=rootProject.name
+    fileDescription=rootProject.name
+    bundledJrePath ='jre\\bin'
+    trademarks="jdsoft"
 
 }
 

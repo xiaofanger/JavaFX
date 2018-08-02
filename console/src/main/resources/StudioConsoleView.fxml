@@ -7,15 +7,18 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.ListView?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="736.0" stylesheets="@StudioConsole.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fanger.console.MainController">
     <bottom>
         <GridPane BorderPane.alignment="CENTER">
@@ -37,7 +40,7 @@
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin></Button>
-                <Button alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#onSettingPane" prefHeight="30.0" prefWidth="84.0" text="高级" textAlignment="CENTER" GridPane.columnIndex="1" />
+                <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSettingPane" prefHeight="30.0" prefWidth="84.0" text="高级" textAlignment="CENTER" GridPane.columnIndex="1" />
                 <Button fx:id="startAndStopBtn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#startServer" prefHeight="30.0" prefWidth="91.0" text="启动" textAlignment="CENTER" GridPane.columnIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" />
@@ -152,7 +155,7 @@
                         </GridPane>
                     </content>
                 </Tab>
-                <Tab closable="false" text="日志">
+                <Tab closable="false" text="日志输出">
                     <content>
                         <GridPane BorderPane.alignment="CENTER">
                             <columnConstraints>
@@ -162,13 +165,39 @@
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="176.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="99.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="83.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="92.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <ListView fx:id="logContent" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowSpan="4" />
+                                <ListView fx:id="logContent" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="4" />
+                                <MenuBar GridPane.columnSpan="4">
+                                    <menus>
+                                        <Menu mnemonicParsing="false" text="ViewAllOrders" />
+                                        <Menu mnemonicParsing="false" text="Preferences">
+                                            <items>
+                                                <MenuItem mnemonicParsing="false" text="Add" />
+                                                <MenuItem mnemonicParsing="false" text="Edit" />
+                                                <MenuItem mnemonicParsing="false" text="Delete" />
+                                            </items>
+                                        </Menu>
+                                        <Menu mnemonicParsing="false" text="ViewAllClients" />
+                                        <Menu mnemonicParsing="false" text="过滤日志">
+                                            <items>
+                                                <MenuItem fx:id="info" mnemonicParsing="false" text="INFO" />
+                                                <MenuItem fx:id="debug" mnemonicParsing="false" text="DEBUG" />
+                                                <MenuItem fx:id="warm" mnemonicParsing="false" text="WARM" />
+                                            </items>
+                                        </Menu>
+                                        <Menu mnemonicParsing="false" text="清空日志">
+                                            <items>
+                                                <MenuItem fx:id="clear" mnemonicParsing="false" text="clear" onAction="#onClearLog"/>
+                                            </items>
+                                        </Menu>
+                                    </menus>
+                                </MenuBar>
                             </children>
                         </GridPane>
                     </content>

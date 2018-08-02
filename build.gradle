@@ -1,5 +1,17 @@
 buildscript {
-
+    repositories {
+        maven {
+            name 'aliyun'
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'edu.sc.seis.gradle:launch4j:2.4.4'
+    }
 }
 
 subprojects {
